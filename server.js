@@ -16,17 +16,15 @@ app.listen(port, () => console.log(`app listening on port ${port}!`));
 
 app.get("/getlist", async (req, res) => {
   const { limit, offset } = req.query;
-  let params = {
+
+  const params = {
     TableName: "ytlist",
-    // ExpressionAttributeValues: {
-    //   ":val": {
-    //     S: 'dd',
-    //   },
-    // },
     Limit: limit || 50,
-    // FilterExpression: "MyAttribute = :val",
-    // ExclusiveStartKey: thisUsersScans[someRequestParamScanID]
   };
+
+  if (offset) {
+    params.ExclusiveStartKey = offset;
+  }
 
   const data = await docClient.scan(params).promise();
   res.send(data);
