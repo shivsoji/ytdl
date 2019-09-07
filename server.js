@@ -23,7 +23,7 @@ app.get("/getlist", async (req, res) => {
   };
 
   if (offset) {
-    params.ExclusiveStartKey = offset;
+    params.ExclusiveStartKey = { videoId: offset };
   }
 
   const data = await docClient.scan(params).promise();
