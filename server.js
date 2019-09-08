@@ -15,11 +15,18 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`app listening on port ${port}!`));
 
 app.get("/getlist", async (req, res) => {
-  const { limit, offset } = req.query;
+  const { limit, offset, category } = req.query;
 
   const params = {
     TableName: "ytlist",
     Limit: limit || 50,
+    FilterExpression: "#query = :category",
+    ExpressionAttributeNames: {
+      "#query": "query",
+    },
+    ExpressionAttributeValues: {
+      ":category": encodeURI(category),
+    },
   };
 
   if (offset) {
